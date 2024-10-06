@@ -9,7 +9,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<RestuarentApplicationDbContext>(options =>
+builder.Services.AddDbContext<ResturantDBContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnction")));
 
 var app = builder.Build();

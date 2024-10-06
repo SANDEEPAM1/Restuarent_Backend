@@ -5,7 +5,7 @@
 namespace Restuarent_Backend.Migrations
 {
     /// <inheritdoc />
-    public partial class initialmigrations : Migration
+    public partial class Login_History : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
