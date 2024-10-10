@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Restuarent_Backend.Models.LoginHistoryEntity;
+using Restuarent_Backend.Models.OrderEntitiy;
+using Restuarent_Backend.Models.ReservationEntity;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Restuarent_Backend.Models.CustomerEntity
@@ -18,6 +21,12 @@ namespace Restuarent_Backend.Models.CustomerEntity
         public bool? IsActive { get; set; }
 
         public bool? IsLoggin { get; set; }
+
+        //navigation properties
+        public LoginHistoryTable LoginHistoryTable { get; set; }
+        public ICollection<OrderTable> OrderTables { get; set; }
+
+        public ICollection<Reservation> Reservations { get; set; }
 
 
     }

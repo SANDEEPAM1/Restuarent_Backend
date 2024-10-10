@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Restuarent_Backend.Models.OrderItemEntity;
 
 namespace Restuarent_Backend.Models.MenuEntity
 {
@@ -24,6 +25,7 @@ namespace Restuarent_Backend.Models.MenuEntity
 
         public DateTime DateTime { get; set;} = DateTime.Now;
 
-
+        //navigation property
+        public ICollection<OrderItemTable> OrderItemTables { get; set;}
     }
 }

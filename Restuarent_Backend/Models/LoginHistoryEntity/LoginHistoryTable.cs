@@ -7,13 +7,13 @@ namespace Restuarent_Backend.Models.LoginHistoryEntity
     {
         [Key]
         public int LoginHistoryId { get; set; }
-        [Required]
+       
+        public DateTime LastLoginDate { get; set; }
+        
+        public int LoginCount { get; set; }
+
+        //navigation
         public string CustomerId { get; set; }
         public CustomerProfile CustomerProfile { get; set; }
-        public DateTime LastLoginDate { get; set; }
-
-        public string OrderFoods { get; set; }
-
-        public bool? IsActiveAccount { get; set; }
     }
 }
