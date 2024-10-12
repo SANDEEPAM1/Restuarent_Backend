@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Restuarent_Backend.Models.CustomerEntity;
 using Restuarent_Backend.Models.DeliveryPersonEntitiiy;
 using Restuarent_Backend.Models.LoginHistoryEntity;
@@ -9,9 +11,10 @@ using Restuarent_Backend.Models.PaymentEntity;
 using Restuarent_Backend.Models.PhysicalTableEntity;
 using Restuarent_Backend.Models.ReservationEntity;
 
+
 namespace Restuarent_Backend.Data
 {
-    public class ResturantDBContext : DbContext
+    public class ResturantDBContext : IdentityDbContext<IdentityUser>
     {
         public ResturantDBContext(DbContextOptions<ResturantDBContext> options) :base(options)
         {
@@ -29,7 +32,10 @@ namespace Restuarent_Backend.Data
         public DbSet<Reservation> Reservations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
+
+          
 {
+            base.OnModelCreating(modelBuilder);
     // CustomerProfile to LoginHistoryTable (One-to-One)
     modelBuilder.Entity<CustomerProfile>()
         .HasOne(c => c.LoginHistoryTable)

@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Restuarent_Backend.Data;
 using Restuarent_Backend.Dtos;
 using Restuarent_Backend.Models.CustomerEntity;
@@ -10,6 +12,7 @@ namespace Restuarent_Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    
     public class AuthController : ControllerBase
     {
         //dbContext connection
@@ -21,7 +24,7 @@ namespace Restuarent_Backend.Controllers
 
         // receiving sign up data
         [HttpPost]
-        public IActionResult RegisterCustomer([FromBody] CustomerRegisterDto regiertDto)
+        public async Task<IActionResult> RegisterCustomer([FromBody] CustomerRegisterDto regiertDto)
         {
             var CustomerId = GenerateCustomerId.customIdGenerator(regiertDto.UserName, regiertDto.Email);
 
@@ -35,12 +38,18 @@ namespace Restuarent_Backend.Controllers
                 IsLoggin = false,
                 RegistrationDate = DateTime.Now,
             };
-             _dbContext.Add(customer);
-             _dbContext.SaveChanges();
-              return Ok(customer);
+            await _dbContext.AddAsync(customer);
+            await _dbContext.SaveChangesAsync();
+            return Ok(customer);
 
 
-            
+
+        }
+        [HttpGet]
+        public async Task<IActionResult> AllGetCustomer()
+        {
+            var customers = await _dbContext.CustomerProfiles.ToListAsync();
+            return Ok(customers);
         }
     }
 }
