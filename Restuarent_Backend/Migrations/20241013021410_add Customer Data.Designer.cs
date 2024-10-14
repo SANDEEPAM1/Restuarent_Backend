@@ -12,8 +12,8 @@ using Restuarent_Backend.Data;
 namespace Restuarent_Backend.Migrations
 {
     [DbContext(typeof(ResturantDBContext))]
-    [Migration("20241012092831_identity library")]
-    partial class identitylibrary
+    [Migration("20241013021410_add Customer Data")]
+    partial class addCustomerData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,6 +50,20 @@ namespace Restuarent_Backend.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "08c37242-d987-44a9-9ccb-6adc4564e32e",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "251ee5f5-6cce-4d41-ab0a-b0875dd79266",
+                            Name = "Customer",
+                            NormalizedName = "CUSTOMER"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -140,6 +154,40 @@ namespace Restuarent_Backend.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "ad37797a-c9b2-4759-a542-12405de02018",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "50ca1aed-8420-4547-a787-9310f4ff91a9",
+                            Email = "admin@example.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@EXAMPLE.COM",
+                            NormalizedUserName = "ADMIN@EXAMPLE.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEH2s9yuceQzdli67m+QfJ7Zs4yUxZsW/B4Pan5bE6lcF4TaWRkjM5HdQwGRQtJ8p5A==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "c5b5920e-4267-420d-b69d-d8b18e937143",
+                            TwoFactorEnabled = false,
+                            UserName = "admin@example.com"
+                        },
+                        new
+                        {
+                            Id = "05d1c43d-9e8b-4eea-aea6-aa344c536363",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "71a24fa5-6745-4875-891e-5a6ff043d356",
+                            Email = "sandeepa@example.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "SANDEEPA@EXAMPLE.COM",
+                            NormalizedUserName = "SANDEEPA#",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDW/1tlaYmXikaaqmYVW1Kr8SbTc6kFEuaFyMcwBY7pIPwH87c3OclPymgHe7yg/6w==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "5bb228f3-bc51-401e-a73b-69f12383788d",
+                            TwoFactorEnabled = false,
+                            UserName = "Sandeepa#"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -202,6 +250,18 @@ namespace Restuarent_Backend.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "ad37797a-c9b2-4759-a542-12405de02018",
+                            RoleId = "08c37242-d987-44a9-9ccb-6adc4564e32e"
+                        },
+                        new
+                        {
+                            UserId = "05d1c43d-9e8b-4eea-aea6-aa344c536363",
+                            RoleId = "251ee5f5-6cce-4d41-ab0a-b0875dd79266"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -238,12 +298,12 @@ namespace Restuarent_Backend.Migrations
                     b.Property<bool?>("IsLoggin")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("RegistrationDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UserName")
                         .IsRequired()
@@ -251,7 +311,21 @@ namespace Restuarent_Backend.Migrations
 
                     b.HasKey("CustomerId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("CustomerProfiles");
+
+                    b.HasData(
+                        new
+                        {
+                            CustomerId = "Sande20241013074409sand8754",
+                            Email = "sandeepa@example.com",
+                            IsActive = true,
+                            IsLoggin = false,
+                            RegistrationDate = new DateTime(2024, 10, 13, 7, 44, 9, 336, DateTimeKind.Local).AddTicks(5689),
+                            UserId = "05d1c43d-9e8b-4eea-aea6-aa344c536363",
+                            UserName = "Sandeepa#"
+                        });
                 });
 
             modelBuilder.Entity("Restuarent_Backend.Models.DeliveryPersonEntitiiy.DeliveryPerson", b =>
@@ -576,6 +650,17 @@ namespace Restuarent_Backend.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Restuarent_Backend.Models.CustomerEntity.CustomerProfile", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Restuarent_Backend.Models.LoginHistoryEntity.LoginHistoryTable", b =>

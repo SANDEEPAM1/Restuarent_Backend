@@ -16,7 +16,7 @@ namespace Restuarent_Backend.Models.PhysicalTableEntity
         public bool? IsAvailable { get; set; }
         public DateTime? ReservationStartDateTime { get; set; }
         public DateTime? ReservationEndDateTime { get; set; }
-        public string? SpecialFeature { get; set; }
+        public string?  SpecialFeature { get; set; }
 
         //navigation prop
         public ICollection<Reservation> Reservations { get; set; }
