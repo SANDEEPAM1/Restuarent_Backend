@@ -8,9 +8,9 @@ namespace Restuarent_Backend.Dtos
 {
     public class OrderDetailsDto
     {
-        [Key]
-        public int OrderId { get; set; }
-        public DateTime OrderTime { get; set; } = DateTime.Now;
+
+    
+        public string phoneNumber { get; set; }
         public string Status { get; set; }
         [Required]
         public string DeliveryType { get; set; }
@@ -19,13 +19,13 @@ namespace Restuarent_Backend.Dtos
 
         //forign key 
         public string CustomerId { get; set; }
-        public CustomerProfile CustomerProfile { get; set; }
+       
 
         public int? DeliveryPerosnId { get; set; }
-        public DeliveryPerson DeliveryPerson { get; set; }
+        
 
-        public ICollection<OrderItemTable> OrderItems { get; set; }
+        public ICollection<OrderItemDto> OrderItems { get; set; } = new List<OrderItemDto>();
 
-        public Payment? Payment { get; set; }
+       public Payment? Payment { get; set; }
     }
 }

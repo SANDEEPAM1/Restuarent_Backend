@@ -10,6 +10,7 @@ namespace Restuarent_Backend.Models.OrderItemEntity
         public int OrderItemId { get; set; }
         public int Quantity { get; set; }
         public decimal Price { get; set; }
+        public string Title { get; set; }
 
         //navigation prop
         public int OrderID { get; set; }

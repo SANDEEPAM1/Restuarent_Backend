@@ -188,6 +188,24 @@ namespace Restuarent_Backend.Data
                }
            );
 
+            modelBuilder.Entity<DeliveryPerson>().HasData(
+           new DeliveryPerson
+           {
+               DeliveryPersonId = 1,
+               FullName = "John Doe",
+               PhoneNumber = "123456789",
+               IsAvailable = true
+           },
+           new DeliveryPerson
+           {
+               DeliveryPersonId = 2,
+               FullName = "Jane Smith",
+               PhoneNumber = "987654321",
+               IsAvailable = true
+           }
+       );
+
+
         }
 
     }
