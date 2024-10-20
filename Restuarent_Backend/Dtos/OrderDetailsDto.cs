@@ -4,9 +4,9 @@ using Restuarent_Backend.Models.OrderItemEntity;
 using Restuarent_Backend.Models.PaymentEntity;
 using System.ComponentModel.DataAnnotations;
 
-namespace Restuarent_Backend.Models.OrderEntitiy
+namespace Restuarent_Backend.Dtos
 {
-    public class OrderTable
+    public class OrderDetailsDto
     {
         [Key]
         public int OrderId { get; set; }
@@ -27,6 +27,5 @@ namespace Restuarent_Backend.Models.OrderEntitiy
         public ICollection<OrderItemTable> OrderItems { get; set; }
 
         public Payment? Payment { get; set; }
-
     }
 }

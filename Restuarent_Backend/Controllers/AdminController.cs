@@ -48,7 +48,7 @@ namespace Restuarent_Backend.Controllers
                 IsAvailable = dto.IsAvailable,
 
             };
-
+           
             await dbContext.AddAsync(menuItem);
             await dbContext.SaveChangesAsync();
 

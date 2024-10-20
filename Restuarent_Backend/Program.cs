@@ -57,7 +57,18 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("CustomerPolicy", policy => policy.RequireRole("Customer"));
 });
 
-builder.Services.AddScoped<JwtTockenGenerator>();   
+builder.Services.AddScoped<JwtTockenGenerator>(); 
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("ReactApp", policyBuilder =>
+    {
+        policyBuilder.WithOrigins("http://localhost:5173");
+        policyBuilder.AllowAnyHeader();
+        policyBuilder.AllowAnyMethod();
+        policyBuilder.AllowCredentials();
+    });
+});
 
 var app = builder.Build();
 
@@ -69,6 +80,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("ReactApp");
 
 app.UseAuthentication();
 

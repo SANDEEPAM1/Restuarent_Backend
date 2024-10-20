@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Restuarent_Backend.Data;
 
@@ -11,9 +12,11 @@ using Restuarent_Backend.Data;
 namespace Restuarent_Backend.Migrations
 {
     [DbContext(typeof(ResturantDBContext))]
-    partial class ResturantDBContextModelSnapshot : ModelSnapshot
+    [Migration("20241019160526_make feild nullable")]
+    partial class makefeildnullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,13 +54,13 @@ namespace Restuarent_Backend.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c6ff0242-33cd-4ea6-859a-00ff96c525df",
+                            Id = "65eee87e-aa19-4b1e-b702-0f7bfb89500b",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "2ccd5011-bc8c-4556-a4b3-765839070910",
+                            Id = "af55aa1c-94ba-44cc-adca-897212a25ab3",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });
@@ -155,33 +158,33 @@ namespace Restuarent_Backend.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "3df80bc8-d38b-4ab4-be31-65261cc88e77",
+                            Id = "07ff73d5-a6a4-4679-a4ec-a6474b9f0c05",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f7db1a6c-cc4e-4fb5-b830-def05befdf0a",
+                            ConcurrencyStamp = "b1be4351-23f8-4e10-824b-eb8c517e9a56",
                             Email = "admin@example.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@EXAMPLE.COM",
                             NormalizedUserName = "ADMIN@EXAMPLE.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAECZcexbPXQL9LlB8K+9S0g8E+M7D7nphFQFZwMdV70FiDnWBbqxsLBNL7cGB+GbH3Q==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMERNwL4Bmyqe+NtmtoDaNby3bRgGWnW89IGVU4hbsJghOopEctAzsuzPOYPSeMuhw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "eb00a989-16f4-4899-9c1b-3ec1bab81fb3",
+                            SecurityStamp = "9a405992-4ca4-4394-a194-039040b7fd35",
                             TwoFactorEnabled = false,
                             UserName = "admin@example.com"
                         },
                         new
                         {
-                            Id = "4eac0c0c-356d-410b-9cea-7c68eb276a0b",
+                            Id = "e97cfa5c-1206-4687-8408-cdf9ebaf51a1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "fff3da88-0637-4563-9499-ddacaf81023a",
+                            ConcurrencyStamp = "a3eabf19-7dbf-406c-8add-3cdfb53bd8ea",
                             Email = "sandeepa@example.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "SANDEEPA@EXAMPLE.COM",
                             NormalizedUserName = "SANDEEPA#",
-                            PasswordHash = "AQAAAAIAAYagAAAAEM00hodfeJUrZm4UldR9JRJiHiipmWOl23ykhwj6xJiEy4YDd8gtF+uwXl/k+FhhxA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAED62YErfidFja2PzhNANt2FuWyLQcEPqRRUpwIF2GSP7EbqDQCEuxTV9ktab/7+4Cg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "30cd695e-77f1-402c-bc43-20df225af0bf",
+                            SecurityStamp = "287bd6c2-de17-47cc-a3ff-ef152959cef9",
                             TwoFactorEnabled = false,
                             UserName = "Sandeepa#"
                         });
@@ -251,13 +254,13 @@ namespace Restuarent_Backend.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "3df80bc8-d38b-4ab4-be31-65261cc88e77",
-                            RoleId = "c6ff0242-33cd-4ea6-859a-00ff96c525df"
+                            UserId = "07ff73d5-a6a4-4679-a4ec-a6474b9f0c05",
+                            RoleId = "65eee87e-aa19-4b1e-b702-0f7bfb89500b"
                         },
                         new
                         {
-                            UserId = "4eac0c0c-356d-410b-9cea-7c68eb276a0b",
-                            RoleId = "2ccd5011-bc8c-4556-a4b3-765839070910"
+                            UserId = "e97cfa5c-1206-4687-8408-cdf9ebaf51a1",
+                            RoleId = "af55aa1c-94ba-44cc-adca-897212a25ab3"
                         });
                 });
 
@@ -315,12 +318,12 @@ namespace Restuarent_Backend.Migrations
                     b.HasData(
                         new
                         {
-                            CustomerId = "Sande20241019214036sand1157",
+                            CustomerId = "Sande20241019213522sand1687",
                             Email = "sandeepa@example.com",
                             IsActive = true,
                             IsLoggin = false,
-                            RegistrationDate = new DateTime(2024, 10, 19, 21, 40, 36, 381, DateTimeKind.Local).AddTicks(3003),
-                            UserId = "4eac0c0c-356d-410b-9cea-7c68eb276a0b",
+                            RegistrationDate = new DateTime(2024, 10, 19, 21, 35, 22, 256, DateTimeKind.Local).AddTicks(5877),
+                            UserId = "e97cfa5c-1206-4687-8408-cdf9ebaf51a1",
                             UserName = "Sandeepa#"
                         });
                 });
@@ -761,7 +764,8 @@ namespace Restuarent_Backend.Migrations
                 {
                     b.Navigation("OrderItems");
 
-                    b.Navigation("Payment");
+                    b.Navigation("Payment")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Restuarent_Backend.Models.PhysicalTableEntity.PhysicalTable", b =>
