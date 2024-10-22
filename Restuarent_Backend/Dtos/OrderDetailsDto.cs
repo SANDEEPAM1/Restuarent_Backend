@@ -15,17 +15,16 @@ namespace Restuarent_Backend.Dtos
         [Required]
         public string DeliveryType { get; set; }
         public string? DeliveyAddress { get; set; }
-        //public string ConfirmationCode { get; set; }
+        //public string ConfirmationCode { get; set;
+  
 
         //forign key 
         public string CustomerId { get; set; }
-       
-
+    
         public int? DeliveryPerosnId { get; set; }
-        
-
+       
         public ICollection<OrderItemDto> OrderItems { get; set; } = new List<OrderItemDto>();
 
-       public Payment? Payment { get; set; }
+       public PaymentDto? Payment { get; set; }
     }
 }
