@@ -14,6 +14,8 @@ namespace Restuarent_Backend.Models.DeliveryPersonEntitiiy
 
         public bool IsAvailable { get; set; }
 
+       
+
         //navigation property
         public ICollection<OrderTable> OrderTables { get; set; }
 

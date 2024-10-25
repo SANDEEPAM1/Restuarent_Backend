@@ -15,18 +15,19 @@ namespace Restuarent_Backend.Models.OrderEntitiy
         [Required]
         public string DeliveryType { get; set; }
         public string? DeliveyAddress { get; set; }
+
+        public string phoneNumber { get; set; }
         //public string ConfirmationCode { get; set; }
 
         //forign key 
         public string CustomerId { get; set; }
         public CustomerProfile CustomerProfile { get; set; }
 
-        public int DeliveryPerosnId { get; set; }
+         public int? DeliveryPerosnId { get; set; }
         public DeliveryPerson DeliveryPerson { get; set; }
 
-        public ICollection<OrderItemTable> OrderItems { get; set; }
-
-        public Payment Payment { get; set; }
+        public ICollection<OrderItemTable> OrderItems { get; set; } 
+        public Payment? Payment { get; set; }
 
     }
 }
