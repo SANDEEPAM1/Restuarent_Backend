@@ -68,7 +68,7 @@ namespace Restuarent_Backend.Controllers
         }
 
         [HttpGet]
-        [Route("/getMenu")]
+        [Route("/   getMenu")]
         public async Task<IActionResult> GetAllMenuItems()
         {
             var menuItems = await dbContext.MenuItems.ToListAsync();
@@ -300,6 +300,58 @@ namespace Restuarent_Backend.Controllers
             await dbContext.SaveChangesAsync();
 
             return Ok(new {message= "delete the table",table.TableId});
+        }
+
+
+
+        [HttpGet]
+        [Route("/getOnlineOrders")]
+        public async Task<IActionResult> getOnlineOrders()
+        {
+            var orders = await dbContext.OrderTables.ToListAsync();
+            if (orders == null || orders.Count<=0)
+            {
+                logger.LogInformation("there is no online orders in current time");
+                return BadRequest(new { message = "there is no any order in the queue" });
+            }
+
+            var onlineOrders = orders.Select(o => new AdminOnlineOrdersDto
+            {
+                OrderId = o.OrderId,
+                OrderTime = o.OrderTime,
+                Status = o.Status,
+                DeliveryType = o.DeliveryType,
+                DeliveryPerosnId = o.DeliveryPerosnId,
+                DeliveyAddress = o.DeliveyAddress,
+                phoneNumber = o.phoneNumber,
+                CustomerId = o.CustomerId,
+            });
+            logger.LogInformation("sending current online orders to admin");
+            return Ok(onlineOrders);
+        }
+
+        [HttpGet]
+        [Route("/getDeliveryPersons")]
+        public async Task<IActionResult> getAllDeliveryPersons()
+        {
+            var deliveryPersons = await dbContext.DeliveryPersons.ToListAsync();
+            if (deliveryPersons == null || deliveryPersons.Count <= 0)
+            {
+                return BadRequest(new { message = "no delivery Persons" });
+            }
+
+            var deliveryPersonList = deliveryPersons.Select(d => new AdminDeliveryPersonDto
+            {
+                   DeliveryPersonId = d.DeliveryPersonId,
+                   PhoneNumber = d.PhoneNumber,
+                   FullName = d.FullName,
+                   IsAvailable = d.IsAvailable
+            }).ToList();
+
+            logger.LogInformation("data is sent to Admin");
+            return Ok(deliveryPersonList);
+
+
         }
     }
 }

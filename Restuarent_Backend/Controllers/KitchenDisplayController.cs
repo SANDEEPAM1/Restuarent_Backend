@@ -30,16 +30,20 @@ namespace Restuarent_Backend.Controllers
 
                 var ordersToCook = await _dBContext.OrderItemTables
                                                           .Where(oi => orderIdToCook.Contains(oi.OrderID))
-                                                            .Select(oi => new
-                                                            {
-                                                                oi.OrderID,
-                                                                oi.OrderItemId,
-                                                                oi.MenuItemId,
-                                                                oi.Quantity,
-                                                                oi.Price,
-                                                                oi.Title
-                                                            })
-                                                            .ToListAsync();
+                                                           .GroupBy(oi => oi.OrderID)  // Group by OrderID
+                                                .Select(group => new
+                                                {
+                                                    OrderID = group.Key, // This is the OrderID
+                                                    Items = group.Select(oi => new
+                                                    {
+                                                        oi.OrderItemId,
+                                                        oi.MenuItemId,
+                                                        oi.Quantity,
+                                                        oi.Price,
+                                                        oi.Title
+                                                    }).ToList() // List of order items
+                                                })
+                                                .ToListAsync();
 
 
                 if (ordersToCook.Count > 0)
