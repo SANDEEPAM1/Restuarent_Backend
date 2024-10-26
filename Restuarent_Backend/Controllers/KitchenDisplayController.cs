@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Restuarent_Backend.Data;
 using Restuarent_Backend.Dtos;
+using System.Runtime.CompilerServices;
 
 namespace Restuarent_Backend.Controllers
 {
@@ -29,21 +30,21 @@ namespace Restuarent_Backend.Controllers
                                     .Select(o => o.OrderId).ToListAsync();
 
                 var ordersToCook = await _dBContext.OrderItemTables
-                                                          .Where(oi => orderIdToCook.Contains(oi.OrderID))
-                                                           .GroupBy(oi => oi.OrderID)  // Group by OrderID
-                                                .Select(group => new
-                                                {
-                                                    OrderID = group.Key, // This is the OrderID
-                                                    Items = group.Select(oi => new
-                                                    {
-                                                        oi.OrderItemId,
-                                                        oi.MenuItemId,
-                                                        oi.Quantity,
-                                                        oi.Price,
-                                                        oi.Title
-                                                    }).ToList() // List of order items
-                                                })
-                                                .ToListAsync();
+                                          .Where(oi => orderIdToCook.Contains(oi.OrderID))
+                                           .GroupBy(oi => oi.OrderID)  // Group by OrderID
+                                .Select(group => new
+                                {
+                                    OrderID = group.Key, // This is the OrderID
+                                    Items = group.Select(oi => new
+                                    {
+                                        oi.OrderItemId,
+                                        oi.MenuItemId,
+                                        oi.Quantity,
+                                        oi.Price,
+                                        oi.Title
+                                    }).ToList() // List of order items
+                                })
+                                .ToListAsync();
 
 
                 if (ordersToCook.Count > 0)
@@ -68,21 +69,23 @@ namespace Restuarent_Backend.Controllers
 
         [HttpPatch]
         [Route("/updateStatus/{id:int}")]
-        public async Task<IActionResult> updateStatus([FromRoute] int id, string status)
+        public async Task<IActionResult> updateStatus([FromRoute] int id,[FromBody] UpdateOrderStateDto dto)
         {
-            var order = await _dBContext.OrderTables.FirstOrDefaultAsync(o => o.OrderId == id);
-            if(order == null)
             {
-                _logger.LogWarning("there is no order like that");
-                return BadRequest("there is no oreder like that");
+                var order = await _dBContext.OrderTables.FindAsync(id);
+                if (order == null)
+                {
+                    _logger.LogWarning("there is no order like that");
+                    return BadRequest("there is no oreder like that");
+                }
+
+                order.Status = dto.Status;
+                await _dBContext.SaveChangesAsync();
+                return Ok(dto.Status);
             }
 
-            order.Status = status;
-            await _dBContext.SaveChangesAsync();
-            return Ok(order);
+
+
         }
-
-
-
-    }   
+    }
 }
