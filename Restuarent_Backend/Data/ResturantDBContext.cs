@@ -59,19 +59,23 @@ namespace Restuarent_Backend.Data
                 modelBuilder.Entity<DeliveryPerson>()
                     .HasMany(d => d.OrderTables)
                     .WithOne(o => o.DeliveryPerson)
-                    .HasForeignKey(o => o.DeliveryPerosnId);
+                    .HasForeignKey(o => o.DeliveryPerosnId)
+                    .OnDelete(DeleteBehavior.SetNull);
 
-                // OrderTable to OrderItemTable (One-to-Many)
-                modelBuilder.Entity<OrderTable>()
-                    .HasMany(o => o.OrderItems)
-                    .WithOne(oi => oi.OrderTable)
-                    .HasForeignKey(oi => oi.OrderID);
+
+            // OrderTable to OrderItemTable (One-to-Many)
+            modelBuilder.Entity<OrderTable>()
+                .HasMany(o => o.OrderItems)
+                .WithOne(oi => oi.OrderTable)
+                .HasForeignKey(oi => oi.OrderID)
+                .OnDelete(DeleteBehavior.Cascade);
 
                 // OrderTable to Payment (One-to-One)
                 modelBuilder.Entity<OrderTable>()
                     .HasOne(o => o.Payment)
                     .WithOne(p => p.OrderTable)
-                    .HasForeignKey<Payment>(p => p.OrderId);
+                    .HasForeignKey<Payment>(p => p.OrderId)
+                    .OnDelete(DeleteBehavior.Cascade);
 
                 // MenuTable to OrderItemTable (One-to-Many)
                 modelBuilder.Entity<MenuTable>()
