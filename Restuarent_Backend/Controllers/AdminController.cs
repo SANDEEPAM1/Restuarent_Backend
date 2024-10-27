@@ -353,5 +353,31 @@ namespace Restuarent_Backend.Controllers
 
 
         }
+
+        [HttpDelete]
+        [Route("/deleteOrder/{id:int}")]
+        public async Task<IActionResult> DeleteOrder([FromRoute] int id)
+        {
+            try
+            {
+
+                var order = await dbContext.OrderTables.Include(o => o.OrderItems)
+                          .Include(o => o.Payment).FirstOrDefaultAsync(o => o.OrderId == id);
+                if(order == null)
+                {
+                    logger.LogWarning($"order Id {id} not found");
+                    return NotFound();
+                }
+
+                dbContext.OrderTables.Remove(order);
+                await dbContext.SaveChangesAsync();
+                return Ok("order and the related orderItems deleted successfully");
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
