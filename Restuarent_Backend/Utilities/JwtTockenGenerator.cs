@@ -31,6 +31,7 @@ namespace Restuarent_Backend.Utilities
             foreach (var role in roles)
             {
                 Claims.Add(new Claim(ClaimTypes.Role, role));
+                Claims.Add(new Claim("role", role));
             }
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtKey));

@@ -90,6 +90,7 @@ namespace Restuarent_Backend.Controllers
 
         [HttpGet]
         [Route("/getMenu")]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> GetAllMenuItems()
         {
             var menuItems = await dbContext.MenuItems.ToListAsync();
@@ -116,7 +117,7 @@ namespace Restuarent_Backend.Controllers
 
         [HttpGet]
         [Route("/getMenuById/{id}")]
-        [Authorize(Roles ="Customer")]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> getMenuById([FromRoute] string id)
         {
             var item = await dbContext.MenuItems.FindAsync(id);
