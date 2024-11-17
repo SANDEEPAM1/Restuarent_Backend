@@ -47,7 +47,7 @@ namespace Restuarent_Backend.Controllers
 
             var user = new IdentityUser { UserName = request.UserName, Email= request.Email };
             var result = await _userManager.CreateAsync(user, request.Password);
-
+            
 
                 
             if (result.Succeeded)
@@ -97,7 +97,8 @@ namespace Restuarent_Backend.Controllers
                 var roles = await _userManager.GetRolesAsync(user);
 
                 var token = _jwtTocken.GenerateJwtToken(user, roles);
-                return Ok(new {Token = token});
+                return Ok(new { Token = token });
+                //return Ok(new { user.Email, roles });
             }
 
             return Unauthorized(new {Message ="Invalid Login attempt."});
