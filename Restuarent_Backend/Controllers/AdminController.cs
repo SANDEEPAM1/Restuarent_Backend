@@ -7,25 +7,46 @@ using Restuarent_Backend.Dtos;
 using Restuarent_Backend.Models.MenuEntity;
 using Restuarent_Backend.Models.PhysicalTableEntity;
 using Microsoft.Extensions.Logging;
+using System.Linq.Expressions;
+using Microsoft.AspNetCore.Identity;
 
 namespace Restuarent_Backend.Controllers
 {
 
-   
-   
+
+    
     [Route("api/[controller]")]
     [ApiController]
     public class AdminController : ControllerBase
     {
         private readonly ResturantDBContext dbContext;
         private readonly ILogger<AdminController> logger;
+        private readonly UserManager<IdentityUser> userManager; 
+        private readonly RoleManager<IdentityRole> roleManager;
 
-        public AdminController(ResturantDBContext _dbContext, ILogger<AdminController> _logger)
+        public AdminController(ResturantDBContext _dbContext, ILogger<AdminController> _logger, UserManager<IdentityUser> _userManager, RoleManager<IdentityRole> _roleManager)
         {
             dbContext = _dbContext;
             logger = _logger;
+            userManager = _userManager;
+            roleManager = _roleManager;
         }
 
+        [HttpGet]
+        [Route("/getAllRoles")]
+        public IActionResult getAllRoles()
+        {
+            var roles = roleManager.Roles.ToList();
+            return Ok(roles);
+        }
+
+        [HttpGet]
+        [Route("/getAllUsers")]
+        public async Task<IActionResult> getAllUsers()
+        {
+            var users = await userManager.Users.ToListAsync();
+            return Ok(users);
+        }
 
 
         [HttpPost]
@@ -68,7 +89,8 @@ namespace Restuarent_Backend.Controllers
         }
 
         [HttpGet]
-        [Route("/   getMenu")]
+        [Route("/getMenu")]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> GetAllMenuItems()
         {
             var menuItems = await dbContext.MenuItems.ToListAsync();
@@ -92,6 +114,33 @@ namespace Restuarent_Backend.Controllers
 
             return Ok(menuItemDtos);   
         }
+
+        [HttpGet]
+        [Route("/getMenuById/{id}")]
+        [Authorize(Roles ="Admin")]
+        public async Task<IActionResult> getMenuById([FromRoute] string id)
+        {
+            var item = await dbContext.MenuItems.FindAsync(id);
+
+            if (item == null)
+            {
+                return NotFound(new { Message = "No menu items found." });
+            }
+            var mitem = new AddMenuItmDto
+            {
+                MenuItemId = item.MenuItemId,
+                Title = item.Title,
+                Description = item.Description,
+                Price = item.Price,
+                Category = item.Category,
+                ImageUrl = item.ImageUrl,
+                IsAvailable = item.IsAvailable,
+            };
+
+            return Ok(mitem);
+
+        }
+
 
         [HttpPut]
         [Route("/menuUpdate/{id}")]
@@ -235,6 +284,35 @@ namespace Restuarent_Backend.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("/getTableById/{id:int}")]
+        public async Task <IActionResult> getTableById([FromRoute] int id)
+        {
+            try
+            {
+                var table = await dbContext.PhysicalTables.FindAsync(id);
+                if(table == null)
+                {
+                    return NotFound();
+                }
+
+                var tabledto = new PhysicalTableDto
+                {
+                    TableId = table.TableId,
+                    TableNumber = table.TableNumber,
+                    Seats = table.Seats,
+                    Location = table.Location,
+                    IsAvailable = table.IsAvailable,
+
+                };
+                return Ok(tabledto);
+            }catch (Exception ex)
+            {
+                return BadRequest(ex.Message);  
+            }
+
+        }
+
         [HttpPut]
         [Route("/updteTable/{id:int}")]
         public async Task<IActionResult> updateTable([FromRoute] int id, [FromBody] UpdatePhysicalTableDto dto)
@@ -248,6 +326,7 @@ namespace Restuarent_Backend.Controllers
             table.SpecialFeature = dto.SpecialFeature;
             table.Location = dto.Location;
             table.TableNumber = dto.TableNumber;
+            table.IsAvailable = dto.IsAvailable;
 
            await dbContext.SaveChangesAsync();
 
@@ -256,6 +335,7 @@ namespace Restuarent_Backend.Controllers
                 SpecialFeature = table.SpecialFeature,
                 Location = table.Location,
                 TableNumber = table.TableNumber,
+                
             };
 
             return Ok(updatetableDto);
@@ -318,7 +398,7 @@ namespace Restuarent_Backend.Controllers
             var onlineOrders = orders.Select(o => new AdminOnlineOrdersDto
             {
                 OrderId = o.OrderId,
-                OrderTime = o.OrderTime,
+                OrderTime = o.OrderTime,    
                 Status = o.Status,
                 DeliveryType = o.DeliveryType,
                 DeliveryPerosnId = o.DeliveryPerosnId,
@@ -379,5 +459,25 @@ namespace Restuarent_Backend.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpDelete]
+        [Route("/deleteDeliveryPerson/{id:int}")]
+        public async Task<IActionResult> DeleteDeliveryPerson([FromRoute]int id)
+        {
+
+            var person = await dbContext.DeliveryPersons.FindAsync(id);
+
+            if(person == null)
+            {
+                return NotFound();
+            }
+
+            dbContext.DeliveryPersons.Remove(person);
+            await dbContext.SaveChangesAsync();
+            return Ok($"{id} this person is deleted.");
+
+
+        }
+
     }
 }

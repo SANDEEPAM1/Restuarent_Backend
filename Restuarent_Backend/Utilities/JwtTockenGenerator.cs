@@ -11,13 +11,13 @@ namespace Restuarent_Backend.Utilities
     {
         private static string _jwtKey;
         private static string _jwtIssure;
-        private static string _jwtAudiance;
+        private static string _jwtAudience;
 
         public JwtTockenGenerator(IConfiguration configuration)
         {
             _jwtKey = configuration["Jwt:Key"];
-            _jwtIssure = configuration["Jwt:Issure"];
-            _jwtAudiance = configuration["Jwt:Audience"];
+            _jwtIssure = configuration["Jwt:Issuer"];
+            _jwtAudience = configuration["Jwt:Audience"];
         }
         public string GenerateJwtToken(IdentityUser user, IList<string> roles)
         {
@@ -31,6 +31,7 @@ namespace Restuarent_Backend.Utilities
             foreach (var role in roles)
             {
                 Claims.Add(new Claim(ClaimTypes.Role, role));
+                Claims.Add(new Claim("role", role));
             }
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtKey));
@@ -38,7 +39,7 @@ namespace Restuarent_Backend.Utilities
 
             var token = new JwtSecurityToken(
                 issuer: _jwtIssure,
-                audience: _jwtAudiance,
+                audience: _jwtAudience,
                 claims: Claims,
                 expires: DateTime.Now.AddMinutes(15),
                 signingCredentials: credentials);

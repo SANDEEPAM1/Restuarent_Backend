@@ -39,7 +39,7 @@ builder.Services.AddAuthentication(options =>
     .AddJwtBearer(options =>
     options.TokenValidationParameters = new TokenValidationParameters
     {
-       RoleClaimType = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role",
+       
        ValidateIssuer = true,
        ValidateAudience = true,
        ValidateLifetime = true,
@@ -72,6 +72,7 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+//"http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
