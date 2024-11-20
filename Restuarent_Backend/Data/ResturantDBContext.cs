@@ -11,6 +11,7 @@ using Restuarent_Backend.Models.PaymentEntity;
 using Restuarent_Backend.Models.PhysicalTableEntity;
 using Restuarent_Backend.Models.ReservationEntity;
 using Restuarent_Backend.Utilities;
+using Restuarent_Backend.Models;
 
 
 namespace Restuarent_Backend.Data
@@ -31,6 +32,9 @@ namespace Restuarent_Backend.Data
         public DbSet<Payment> Payments { get; set; }
         public DbSet<PhysicalTable> PhysicalTables { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
+        public DbSet<AdminEntity> AdminEntities { get; set; }
+        public DbSet<ChefEntity> chefEntities { get; set; }
+        public DbSet<WaiterEntity> waiterEntities { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
 
@@ -95,8 +99,34 @@ namespace Restuarent_Backend.Data
                     .WithOne(r => r.CustomerProfile)
                     .HasForeignKey(r => r.CustomerId);
 
-                // Setting default value for IsAvailable fields
-                modelBuilder.Entity<DeliveryPerson>()
+                modelBuilder.Entity<WaiterEntity>()
+                    .HasOne(w => w.User) // Navigation property to IdentityUser
+                    .WithMany()          // No reverse navigation in IdentityUser
+                    .HasForeignKey(w => w.UserId) // Foreign key in WaiterEntity
+                    .OnDelete(DeleteBehavior.Cascade); // Enable cascading deletes
+
+            // Configure ChefEntity relationship
+                    modelBuilder.Entity<ChefEntity>()
+                        .HasOne(c => c.User) // Navigation property to IdentityUser
+                        .WithMany()          // No reverse navigation in IdentityUser
+                        .HasForeignKey(c => c.UserId) // Foreign key in ChefEntity
+                        .OnDelete(DeleteBehavior.Cascade); // Enable cascading deletes
+
+            // Configure AdminEntity relationship
+                modelBuilder.Entity<AdminEntity>()
+                    .HasOne(a => a.User) // Navigation property to IdentityUser
+                    .WithMany()          // No reverse navigation in IdentityUser
+                    .HasForeignKey(a => a.UserId) // Foreign key in AdminEntity
+                    .OnDelete(DeleteBehavior.Cascade);
+
+            //modelBuilder.Entity<DeliveryPerson>()
+            //   .HasOne(dp => dp.User) // Navigation property to IdentityUser
+            //   .WithMany()            // No reverse navigation in IdentityUser
+            //   .HasForeignKey(dp => dp.UserId) // Foreign key in DeliveryPerson
+            //   .OnDelete(DeleteBehavior.Cascade);
+
+            // Setting default value for IsAvailable fields
+            modelBuilder.Entity<DeliveryPerson>()
                     .Property(dp => dp.IsAvailable)
                     .HasDefaultValue(false);
 
@@ -113,6 +143,9 @@ namespace Restuarent_Backend.Data
           
             string adminRoleId = Guid.NewGuid().ToString();
             string customerRoleId = Guid.NewGuid().ToString();
+            string chefRoleId = Guid.NewGuid().ToString();
+            string deliveryPersonRoleId = Guid.NewGuid().ToString();
+            string waiterRoleId = Guid.NewGuid().ToString();
 
             modelBuilder.Entity<IdentityRole>().HasData(
                 new IdentityRole
@@ -126,6 +159,24 @@ namespace Restuarent_Backend.Data
                     Id = customerRoleId,
                     Name = "Customer",
                     NormalizedName = "CUSTOMER"
+                },
+                 new IdentityRole
+                 {
+                     Id = chefRoleId,
+                     Name = "Chef",
+                     NormalizedName = "CHEF"
+                 },
+                new IdentityRole
+                {
+                    Id = deliveryPersonRoleId,
+                    Name = "DeliveryPerson",
+                    NormalizedName = "DELIVERYPERSON"
+                },
+                new IdentityRole
+                {
+                    Id = waiterRoleId,
+                    Name = "Waiter",
+                    NormalizedName = "WAITER"
                 }
             );
 

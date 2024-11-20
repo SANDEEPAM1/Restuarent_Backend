@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Restuarent_Backend.Data;
+using Restuarent_Backend.Services;
 using Restuarent_Backend.Utilities;
 using System.Security.Claims;
 using System.Text;
@@ -10,16 +11,18 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddDbContext<ResturantDBContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnction")));
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {
+    options.SignIn.RequireConfirmedAccount = true;
     options.Password.RequiredLength = 8;
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireDigit = false;
@@ -70,9 +73,11 @@ builder.Services.AddCors(options =>
     });
 });
 
+
+
 var app = builder.Build();
 
-//"http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

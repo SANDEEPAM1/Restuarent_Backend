@@ -19,7 +19,7 @@ namespace Restuarent_Backend.Dtos
   
 
         //forign key 
-        public string CustomerId { get; set; }
+        public string UserId { get; set; }
     
         public int? DeliveryPerosnId { get; set; }
        

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Restuarent_Backend.Data;
 using Restuarent_Backend.Dtos;
 using Restuarent_Backend.Models.OrderEntitiy;
@@ -30,6 +31,10 @@ namespace Restuarent_Backend.Controllers
             {
                 try
                 {
+                    var cusId = await _dbContext.CustomerProfiles
+                                        .Where(c => c.UserId == dto.UserId)
+                                        .Select(c => c.CustomerId)
+                                        .FirstOrDefaultAsync();
                     // 1. Create the order details
                     var orderDetails = new OrderTable
                     {
@@ -37,7 +42,7 @@ namespace Restuarent_Backend.Controllers
                         Status = dto.Status,
                         DeliveryType = dto.DeliveryType,
                         DeliveyAddress = dto.DeliveyAddress,
-                        CustomerId = dto.CustomerId,
+                        CustomerId = cusId,
                         phoneNumber = dto.phoneNumber,
                     };
 
