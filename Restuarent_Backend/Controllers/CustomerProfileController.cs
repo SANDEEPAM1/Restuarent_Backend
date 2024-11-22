@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Restuarent_Backend.Data;
 using Restuarent_Backend.Dtos;
+using Restuarent_Backend.Models;
 
 namespace Restuarent_Backend.Controllers
 {
@@ -46,5 +47,47 @@ namespace Restuarent_Backend.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+
+        //[HttpGet("{menuItemId}")]
+        //[Route("/getComments/{menuItemId}")]
+        //public async Task<IActionResult> GetComments(string menuItemId)
+        //{
+        //    try
+        //    {
+        //        // Get the comments related to the specified menuItemId
+        //        var commentTexts = await _dbContext.comments
+        //            .Where(c => c.MenuItemId == menuItemId)
+        //            .Select(c => c.Comments)
+        //            .ToListAsync(); // Ensure DbContext is configured properly and comments is DbSet
+
+        //        if (commentTexts == null || !commentTexts.Any())
+        //        {
+        //            return NotFound("No comments found for the specified menu item ID.");
+        //        }
+
+        //        return Ok(commentTexts);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Capture any exception that might be thrown and return a server error.
+        //        return StatusCode(500, $"Internal server error: {ex.Message}");
+        //    }
+        //}
+
+        [HttpPost]
+        public async Task<IActionResult> AddComment([FromBody] CommentDto request)
+        {
+            var newComment = new Comment
+            {
+                MenuItemId = request.MenuItemId,
+                Comments = request.Comments
+            };
+            _dbContext.comments.Add(newComment);
+            await _dbContext.SaveChangesAsync();
+            return Ok();
+        }
     }
+
+
 }

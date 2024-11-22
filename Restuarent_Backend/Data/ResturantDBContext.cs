@@ -35,6 +35,7 @@ namespace Restuarent_Backend.Data
         public DbSet<AdminEntity> AdminEntities { get; set; }
         public DbSet<ChefEntity> chefEntities { get; set; }
         public DbSet<WaiterEntity> waiterEntities { get; set; }
+        public DbSet<Comment> comments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
 
