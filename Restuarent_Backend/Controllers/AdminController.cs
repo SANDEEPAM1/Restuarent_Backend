@@ -460,24 +460,24 @@ namespace Restuarent_Backend.Controllers
             }
         }
 
-        [HttpDelete]
-        [Route("/deleteDeliveryPerson/{id:int}")]
-        public async Task<IActionResult> DeleteDeliveryPerson([FromRoute]int id)
-        {
+        //[HttpDelete]
+        //[Route("/deleteDeliveryPerson/{id:int}")]
+        //public async Task<IActionResult> DeleteDeliveryPerson([FromRoute]int id)
+        //{
 
-            var person = await dbContext.DeliveryPersons.FindAsync(id);
+        //    var person = await dbContext.DeliveryPersons.FindAsync(id);
 
-            if(person == null)
-            {
-                return NotFound();
-            }
+        //    if(person == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            dbContext.DeliveryPersons.Remove(person);
-            await dbContext.SaveChangesAsync();
-            return Ok($"{id} this person is deleted.");
+        //    dbContext.DeliveryPersons.Remove(person);
+        //    await dbContext.SaveChangesAsync();
+        //    return Ok($"{id} this person is deleted.");
 
 
-        }
+        //}
 
     }
 }
